@@ -15,7 +15,7 @@ export default function Paginacion(props: paginacionProps) {
       pagina: paginaAnterior,
       activo: false,
     });
-    for (let i = 1; i <= props.cantidadTotalDePaginas; i) {
+    for (let i = 1; i <= props.cantidadTotalDePaginas; i++) {
       if (
         i >= props.paginaActual - props.radio &&
         i <= props.paginaActual + props.radio
