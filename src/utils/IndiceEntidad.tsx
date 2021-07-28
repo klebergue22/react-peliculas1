@@ -1,27 +1,26 @@
-import axios, { AxiosResponse } from 'axios';
-import React, { ReactElement, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Button from './Button';
-import confirmar from './Confirmar';
-import { urlGeneros } from './endpoints';
-import ListadoGenerico from './ListadoGenerico';
-import Paginacion from './Paginacion';
+import axios, { AxiosResponse } from "axios";
+import React, { ReactElement, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Button from "./Button";
+import confirmar from "./Confirmar";
+import { urlGeneros } from "./endpoints";
+import ListadoGenerico from "./ListadoGenerico";
+import Paginacion from "./Paginacion";
 
 export default function IndiceEntidad<T>(props: indiceEntidadProps<T>) {
-    
   const [entidades, setEntidades] = useState<T[]>();
   const [totalDePaginas, setTotalDePaginas] = useState(0);
   const [recordsPorPagina, setRecordsPorPagina] = useState(5);
   const [pagina, setPagina] = useState(1);
-    console.log(urlGeneros);
-    
-     useEffect(() => {
+  console.log(urlGeneros);
+
+  useEffect(() => {
     cargarDatos();
   }, [pagina, recordsPorPagina]);
 
   function cargarDatos() {
     axios
-      .get(urlGeneros, {
+      .get(props.url, {
         params: { pagina, recordsPorPagina },
       })
       .then((respuesta: AxiosResponse<T[]>) => {
@@ -40,17 +39,24 @@ export default function IndiceEntidad<T>(props: indiceEntidadProps<T>) {
     } catch (error) {
       console.log(error.response.data);
     }
-    }
-    const botones = (urlEditar: string, id: number) => <>
-     <Link className="btn btn-success"to={urlEditar}>Editar</Link>
+  }
+  const botones = (urlEditar: string, id: number) => (
+    <>
+      <Link className="btn btn-success" to={urlEditar}>
+        Editar
+      </Link>
       <Button
         onClick={() => confirmar(() => borrar(id))}
-        className="btn btn-danger">Borrar </Button>
+        className="btn btn-danger"
+      >
+        Borrar{" "}
+      </Button>
     </>
-    return (
-        <>
+  );
+  return (
+    <>
       <h3> {props.titulo}</h3>
-      <Link className="btn btn-primary" to="generos/crear">
+      <Link className="btn btn-primary" to={props.urlCrear}>
         Crear {props.nombreEntidad}
       </Link>
       <div className="form-group" style={{ width: "150px" }}>
@@ -74,22 +80,23 @@ export default function IndiceEntidad<T>(props: indiceEntidadProps<T>) {
         cantidadTotalDePaginas={totalDePaginas}
         paginaActual={pagina}
         onChange={(nuevaPagina) => setPagina(nuevaPagina)}
-            />
-            <ListadoGenerico listado={entidades}>
-          <table className="table table-striped">
-              {props.children(entidades!,botones)}
-                    
-                 </table>
-            </ListadoGenerico>
-            </>
-    )
+      />
+      <ListadoGenerico listado={entidades}>
+        <table className="table table-striped">
+          {props.children(entidades!, botones)}
+        </table>
+      </ListadoGenerico>
+    </>
+  );
 }
-interface indiceEntidadProps<T>{
-    url: string;
-    urlCrear: string;
-    children:(entidades: T[],
-        botones: (urlEditar: string, id: number) => ReactElement):ReactElement ;
+interface indiceEntidadProps<T> {
+  url: string;
+  urlCrear: string;
+  children(
+    entidades: T[],
+    botones: (urlEditar: string, id: number) => ReactElement
+  ): ReactElement;
 
-    titulo: string;
-    nombreEntidad: string;
+  titulo: string;
+  nombreEntidad: string;
 }
