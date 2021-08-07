@@ -21,11 +21,6 @@ export default function LandingPage() {
   }
   return (
     <>
-      <Autorizado
-        autorizado={<>estas AUTORIZADO</>}
-        noAutorizado={<>NO AUTORIZADO</>}
-        role="admin"
-      />
       <AlertaContext.Provider value={() => cargarDatos()}>
         <h3>En Cartelera</h3>
         <ListadoPeliculas peliculas={peliculas.enCines} />
