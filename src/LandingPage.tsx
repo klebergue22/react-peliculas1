@@ -4,9 +4,8 @@ import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import ListadoPeliculas from "./peliculas/ListadoPeliculas";
 import { landingPageDTO } from "./peliculas/Peliculas.model";
-import { urlPeliculas } from "./utils/endpoints";
 import AlertaContext from "./utils/AlertaContext";
-import Autorizado from "./auth/Autorizado";
+import { urlPeliculas } from "./utils/endpoints";
 
 export default function LandingPage() {
   const [peliculas, setPeliculas] = useState<landingPageDTO>({});

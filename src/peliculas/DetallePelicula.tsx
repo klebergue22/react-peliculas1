@@ -1,13 +1,16 @@
 /** @format */
 
 import axios, { AxiosResponse } from "axios";
+import { title } from "process";
 import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 import Cargando from "../utils/Cargando";
 import { coordenadaDTO } from "../utils/coordenadas.model";
-import { urlPeliculas } from "../utils/endpoints";
+import { urlPeliculas, urlRatings } from "../utils/endpoints";
 import Mapa from "../utils/Mapa";
+import Rating from "../utils/Rating";
 import { peliculaDTO } from "./Peliculas.model";
 
 export default function DetallePelicula() {
@@ -48,6 +51,11 @@ export default function DetallePelicula() {
     return `https://www.youtube.com/embed/${video_id}`;
   }
 
+  async function onVote(voto: number) {
+    await axios.post(urlRatings, { puntuacion: voto, peliculaId: id });
+    Swal.fire({ icon: "success", title: "Voto Recibido" });
+  }
+
   return pelicula ? (
     <div style={{ display: "flex" }}>
       <div>
@@ -64,7 +72,8 @@ export default function DetallePelicula() {
             {genero.nombre}
           </Link>
         ))}
-        |{pelicula.fechaLanzamiento.toDateString()}
+        |{pelicula.fechaLanzamiento.toDateString()}| Tu Voto:{" "}
+        <Rating maximoValor={5} valorSeleccionado={0} onChange={() => {}} />
         <div style={{ display: "flex", marginTop: "1rem" }}>
           <span style={{ display: "inline-block", marginRight: "1rem" }}>
             <img

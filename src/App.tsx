@@ -7,9 +7,11 @@ import AutenticacionContext from "./auth/AutenticacionContext";
 import { claim } from "./auth/auth.model";
 import { obtenerClaims } from "./auth/manejadorJWT";
 import rutas from "./route-config";
+import { configurarInterceptor } from "./utils/interceptores";
 import Menu from "./utils/Menu";
 import configurarValidaciones from "./validaciones";
 configurarValidaciones();
+configurarInterceptor();
 
 function App() {
   const [claims, setClaims] = useState<claim[]>([]);
