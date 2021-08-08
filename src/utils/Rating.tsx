@@ -1,6 +1,5 @@
 /** @format */
 
-import { text } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -16,6 +15,7 @@ export default function Rating(props: ratingProps) {
   useEffect(() => {
     setMaximoValorArr(Array(props.maximoValor).fill(0));
   }, [props.maximoValor]);
+
   function manejarMouseOver(voto: number) {
     setValorSeleccionado(voto);
   }
